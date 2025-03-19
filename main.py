@@ -5,6 +5,16 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 ad = adapter.Adapter(env)
+max_tokens = 2000
+is_local = True if env("LLM_TYPE") == "local" else False
+
+if is_local:
+    from modules import active_mem 
+    max_tokens = int(env("OLLAMA_TOKENS"))
+    if max_tokens < 1000:
+        raise ValueError("The number of tokens must be greater than 1000")
+    max_tokens = max_tokens-500
+    am = active_mem.TokenLimitedString(max_tokens)
 
 chat_history = ""
 
@@ -35,13 +45,21 @@ def parse_command(data, args=None):
 
 while True:
     try:
+        if is_local:
+            print(f"[current active mem length: {len(am.value)}]\n")
         chat = input(">>> ").strip()
         if chat.startswith("/"):
             parse_command(chat)
         else:
-            result = ad.chat(chat, chat_history)
+            if is_local:
+                history = am.value
+            else:
+                history = chat_history
+            result = ad.chat(chat, history)
             print(result)
             chat_history += f"user: {chat}\nsystem: {result}\n"
+            if is_local:
+                am.add_data(chat_history)
     
     except KeyboardInterrupt:
         sys.exit(0)
