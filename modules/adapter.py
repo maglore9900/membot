@@ -17,7 +17,7 @@ class Adapter:
             from langchain_huggingface import HuggingFaceEmbeddings
             from langchain_ollama import ChatOllama
             self.llm_chat = ChatOllama(
-                base_url=env("OLLAMA_ENDPOINT"), model=env("OLLAMA_MODEL")
+                base_url=env("OLLAMA_ENDPOINT"), model=env("OLLAMA_MODEL"), num_ctx=env.int("OLLAMA_TOKENS", 2048)
             )
             model_name = "BAAI/bge-small-en"
             model_kwargs = {"device": "cpu"}

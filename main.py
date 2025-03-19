@@ -8,7 +8,6 @@ ad = adapter.Adapter(env)
 
 chat_history = ""
 
-
 commands = {
     "save": lambda filename=None: fh.save_file(chat_history, filename),
     "load": lambda: fh.select_file(),
@@ -23,16 +22,18 @@ def parse_command(data, args=None):
     if command in commands:
         if command == "load":
             chat_history = commands[command]()
-        if command == "save":
+        elif command == "save":
             commands[command](args)
-        else:
-            return commands[command]()
+        elif command == "quit":
+            choice = input("do you want to save your chat history?\nY/N\n")
+            if choice.lower() == "y":
+                commands["save"]()
+            commands[command]()
 
 
 while True:
     try:
         chat = input(">>> ").strip()
-        print(chat)
         if chat.startswith("/"):
             parse_command(chat)
         else:
