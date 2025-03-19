@@ -23,6 +23,8 @@ With your venv activated run `python main.py` and follow the instructions.
 
 `/load` will show you available chat history files and load them into your session
 
+`/clear` will clear the chat history in the session. If you loaded the chat history from file, the file remains.
+
 ## Prompts
 
 Membot only has one prompt and its in `modules/prompts.py` and its `main`, feel free to customize this how you like, but keep chat history and user query the way they are.

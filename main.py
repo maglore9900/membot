@@ -29,6 +29,8 @@ def parse_command(data, args=None):
             if choice.lower() == "y":
                 commands["save"]()
             commands[command]()
+        elif command == "clear":
+            chat_history = ""
 
 
 while True:
