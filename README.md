@@ -27,4 +27,4 @@ With your venv activated run `python main.py` and follow the instructions.
 
 ## Prompts
 
-Membot only has one prompt and its in `modules/prompts.py` and its `main`, feel free to customize this how you like, but keep chat history and user query the way they are.
+Membot only has one prompt and its in `modules/prompts.py` and its `role`, feel free to customize this how you like.

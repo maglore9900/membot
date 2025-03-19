@@ -1,23 +1,25 @@
 from langchain_core.prompts import ChatPromptTemplate
-from modules import prompts
-
 
 class Adapter:
     def __init__(self, env):
         self.llm_text = env("LLM_TYPE")
-        self.prompt = ChatPromptTemplate.from_template(prompts.main)
+        self.role = env("LLM_ROLE", default="You are a story teller")
+        self.prompt = ChatPromptTemplate([
+            ("system", self.role),
+            ("human", "chat_history:{chat_history}\n{query}"),
+        ])
         if self.llm_text.lower() == "openai":
             # from langchain_openai import OpenAIEmbeddings
             from langchain_openai import ChatOpenAI
             self.llm_chat = ChatOpenAI(
-                temperature=env.float("OPENAI_TEMP", 0.5), model=env("OPENAI_MODEL"), openai_api_key=env("OPENAI_API_KEY")
+                temperature=env.float("OPENAI_TEMP", default=0.5), model=env("OPENAI_MODEL"), openai_api_key=env("OPENAI_API_KEY")
             )
             # self.embedding = OpenAIEmbeddings(model="text-embedding-ada-002")
         elif self.llm_text.lower() == "local":
             # from langchain_huggingface import HuggingFaceEmbeddings
             from langchain_ollama import ChatOllama
             self.llm_chat = ChatOllama(
-                base_url=env("OLLAMA_ENDPOINT", "127.0.0.1"), model=env("OLLAMA_MODEL"), num_ctx=env.int("OLLAMA_TOKENS", 2048), temperature=env.float("OLLAMA_TEMPERATURE", 0.5)
+                base_url=env("OLLAMA_ENDPOINT", default="127.0.0.1"), model=env("OLLAMA_MODEL"), num_ctx=env.int("OLLAMA_TOKENS", default=2048), temperature=env.float("OLLAMA_TEMP", default=0.5)
             )
             # model_name = "BAAI/bge-small-en"
             # model_kwargs = {"device": "cpu"}
@@ -45,7 +47,7 @@ class Adapter:
 
     def chat(self, query, chat_history):
         from langchain_core.output_parsers import StrOutputParser
-        chain = self.prompt | self.llm_chat | StrOutputParser()
+        chain =  self.prompt | self.llm_chat | StrOutputParser()
         result = chain.invoke({"query":query, "chat_history":chat_history})
         return result
 
