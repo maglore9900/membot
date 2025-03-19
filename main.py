@@ -40,7 +40,7 @@ def parse_command(data, args=None):
 while True:
     try:
         if is_local:
-            print(f"[current active mem length: {len(am.value)}]\n")
+            print(f"[current active mem length: {len(am.tokens)}/{max_tokens}]\n")
         chat = input(">>> ").strip()
         if chat.startswith("/"):
             parse_command(chat)
