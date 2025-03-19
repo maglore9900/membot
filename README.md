@@ -11,8 +11,18 @@
    >
 4) Inside of the folder type `uv install -e .`
 
-## Running Pbot
+## Running Membot
 
 With your venv activated run `python main.py` and follow the instructions.
 
-Your output will be saved in project_cache.json
+## Commands
+
+`/save` saves the chat history, you can optionally give the file a name
+
+`/quit` quits, it will ask you if you want to save
+
+`/load` will show you available chat history files and load them into your session
+
+## Prompts
+
+Membot only has one prompt and its in `modules/prompts.py` and its `main`, feel free to customize this how you like, but keep chat history and user query the way they are.
