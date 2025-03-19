@@ -18,30 +18,24 @@ if is_local:
 
 chat_history = ""
 
-commands = {
-    "save": lambda filename=None: fh.save_file(chat_history, filename),
-    "load": lambda: fh.select_file(),
-    "quit": lambda: sys.exit(0)
-}
-
 def parse_command(data, args=None):
     global chat_history
     parts = data.lstrip("/").strip().split(maxsplit=1)
     command = parts[0].lower()
     args = parts[1] if len(parts) > 1 else ""
-    if command in commands:
-        if command == "load":
-            chat_history = commands[command]()
-        elif command == "save":
-            commands[command](args)
-        elif command == "quit":
-            choice = input("do you want to save your chat history?\nY/N\n")
-            if choice.lower() == "y":
-                commands["save"]()
-            commands[command]()
-        elif command == "clear":
-            chat_history = ""
-
+    if command == "load":
+        chat_history = fh.select_file()
+    elif command == "save":
+        fh.save_file(chat_history, args)
+    elif command == "quit":
+        choice = input("do you want to save your chat history?\nY/N\n")
+        if choice.lower() == "y":
+            fh.save_file(chat_history, args)
+        sys.exit(0)
+    elif command == "clear":
+        chat_history = ""
+        if is_local:
+            am.clear_memory
 
 while True:
     try:

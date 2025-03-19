@@ -30,4 +30,9 @@ class TokenLimitedString:
     @property
     def value(self):
         return " ".join(self._sentences)
+
+    @property
+    def clear_memory(self):
+        self._sentences = []
+        return True
     
