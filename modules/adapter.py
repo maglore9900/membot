@@ -10,14 +10,14 @@ class Adapter:
             from langchain_openai import OpenAIEmbeddings
             from langchain_openai import ChatOpenAI
             self.llm_chat = ChatOpenAI(
-                temperature=0.3, model=env("OPENAI_MODEL"), openai_api_key=env("OPENAI_API_KEY")
+                temperature=env.float("OPENAI_TEMP", 0.5), model=env("OPENAI_MODEL"), openai_api_key=env("OPENAI_API_KEY")
             )
             self.embedding = OpenAIEmbeddings(model="text-embedding-ada-002")
         elif self.llm_text.lower() == "local":
             from langchain_huggingface import HuggingFaceEmbeddings
             from langchain_ollama import ChatOllama
             self.llm_chat = ChatOllama(
-                base_url=env("OLLAMA_ENDPOINT"), model=env("OLLAMA_MODEL"), num_ctx=env.int("OLLAMA_TOKENS", 2048)
+                base_url=env("OLLAMA_ENDPOINT"), model=env("OLLAMA_MODEL"), num_ctx=env.int("OLLAMA_TOKENS", 2048), temperature=env.float("OLLAMA_TEMPERATURE", 0.5)
             )
             model_name = "BAAI/bge-small-en"
             model_kwargs = {"device": "cpu"}

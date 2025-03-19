@@ -1,6 +1,12 @@
 import os
 from datetime import datetime
 
+
+def ensure_folder_exists():
+    folder_path = "chat_history"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
 def list_files_in_directory(path='./chat_history'):
     try:
         # List all files and directories in the specified path
@@ -16,7 +22,11 @@ def list_files_in_directory(path='./chat_history'):
 
 def select_file():
     # Display the files with numbered options
+    ensure_folder_exists()
     files = list_files_in_directory()
+    if not files:
+        print("No files found.")
+        return
     for index, file in enumerate(files, start=1):
         print(f"{index}) {file}")
 
@@ -35,6 +45,7 @@ def select_file():
             print("Invalid input. Please enter a number.")
 
 def save_file(data, filename=None):
+    ensure_folder_exists()
     now = datetime.now()
     formatted_time = now.strftime("%m%d%y_%H%M")
     if filename:
