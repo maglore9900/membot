@@ -9,7 +9,7 @@
 
    > Linux: source .venv/bin/activate
    >
-4) Inside of the folder type `uv install -e .`
+4) Inside of the folder type `uv run pip install -e .`
 
 ## Running Membot
 
