@@ -1,10 +1,9 @@
 import tiktoken
 import nltk
 
-try:
-    nltk.download('punkt')
-except:
-    pass
+
+nltk.download('punkt_tab')
+
 
 class TokenLimitedString:
     def __init__(self, max_tokens=2000, encoding_name="cl100k_base"):
